@@ -17,8 +17,8 @@ The page displayed at http://sammyoos.github.io/EratoFun shows this pattern
 as best as I could to demonstrate the similarities.  I have, for some time,
 tried to figure if the numbers are predictable, but so far have not had success.
 
-The page displayed, shows the gap between composites knocked out the by each 
-prime being interated over (divided by because all the gaps are even).  Each
+The page displayed, shows the gap between composites knocked out by each 
+prime being interated over (divided by two because all the gaps are even).  Each
 row is also shifted over by one, to highlight the similarities between the rows.
 
 _Sam_
