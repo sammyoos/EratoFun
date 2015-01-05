@@ -112,8 +112,8 @@ def startSieve():
 	printDocFooter()
                     
 
-maxPrimeCandidate = 10000
-maxColumnCount = 500
+maxPrimeCandidate = 1000
+maxColumnCount = 300
 maxHalfDomain = maxPrimeCandidate*maxPrimeCandidate / 2
 
 startSieve()
