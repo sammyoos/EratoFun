@@ -24,10 +24,14 @@ row is also shifted over by one, to highlight the similarities between the rows.
 _Sam_
 
 
-Interesting bit:  I'm sure someone quite abit smarter than me has already discovered this,
+Interesting Bit
+---------------
+
+
+I'm sure someone a fair bit smarter than me has already discovered this,
 but in case not...
 
-** Sammy's Conjecture **
+**Sammy's Conjecture**
 
 For all primes, take the gap "g" between the square of that prime "p" and the next integer 
 "c" that would be marked as a composite of that prime (and had not already been marked as a
@@ -40,9 +44,10 @@ Interestingly, then, c must equal p x p' as g = c - p * p
 
 So, once the sieve has been completed for all primes less than or equal to P, the sieve
 provides three ways to determine the next prime (in order of increasing complexity):
-1. the next unmarked integer in the sieve array (Step #4 here http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Algorithm_description )
+
+1. the next unmarked integer in the sieve array (Step #4 here: [wikipedia.org/wiki/Sieve_of_Eratosthenes](http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Algorithm_description ))
 2. p' = p + g / p (as shown above)
 3. p' = c / p
 
-It follows that #2 and #3 are valid only iff p' = p + g/p.
+It follows that #2 and #3 are valid iff p' = p + g/p.
 
