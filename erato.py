@@ -40,6 +40,20 @@ def printDocFooter():
 </html>
 """ )
 
+def printDocRow( prime, row, indent, broken ):
+	print( '<tr><th>%s</th>' % prime, end='' )
+	print( '<td colspan="%d">&nbsp;</td>' % indent, end='' )
+
+	for i in row:
+		if broken < 0:
+			print( '<td class=breakPat>%s</td>' % i, end='' )
+		else:
+			print( '<td>%s</td>' % i, end='' )
+			broken -= 1
+
+	print( '</tr>' )
+
+
 def processNewPrime( prime, erato, prev, indent ):
 	global maxColumnCount
 	global maxHalfDomain
@@ -48,9 +62,6 @@ def processNewPrime( prime, erato, prev, indent ):
 	if( indent > maxColumnCount ):
 		return( None )
 
-	print( '<tr><th>%s</th>' % prime, end='' )
-	print( '<td colspan="%d">&nbsp;</td>' % indent, end='' )
-
 	gap = 1
 	column_count = indent
 	first = int(( prime * prime ) / 2)
@@ -58,7 +69,7 @@ def processNewPrime( prime, erato, prev, indent ):
 
 	curr = []
 	prevIdx = 1
-	patternBroken = True if( prev is None ) else False
+	patternBroken = 0
 
 	for index in xrange( first+prime, maxHalfDomain+1, prime ):
 		if( erato[index] != 0 ):
@@ -68,21 +79,37 @@ def processNewPrime( prime, erato, prev, indent ):
 				column_count += 1
 				curr.append( gap )
 
-				if( not patternBroken and gap != prev[prevIdx] ):
-					patternBroken = True
+				print( '<!--' )
+				print( 'prime   = %i' % prime )
+				print( 'gap     = %i' % gap )
+				print( 'prevIdx = %i' % prevIdx )
+
+				if( prev is None ):
+					print( 'prev is none' )
+				else:
+					print( 'prev is not none' )
+					print( 'prev[prevIdx] = %i' % prev[prevIdx] )
+
+				print( '-->' )
+
+
+				if( prev is not None and gap == prev[prevIdx] ):
+					prevIdx += 1
+				else:
+					prev = None
+
+
+				"""
+				if( patternBroken == 0 and gap != prev[prevIdx] ):
+					patternBroken = prevIdx
 				else:
 					prevIdx += 1
-
-				if( patternBroken ):
-					print( '<td class=breakPat>%s</td>' % gap, end='' )
-				else:
-					print( '<td>%s</td>' % gap, end='' )
+				"""
 
 			erato[index]=prime
 			gap = 1
 
-	print( '</tr>' )
-	#print( '!--', curr, '--!' )
+	printDocRow( prime, curr, indent, prevIdx )
 	return( curr )
 
 
@@ -112,8 +139,8 @@ def startSieve():
 	printDocFooter()
                     
 
-maxPrimeCandidate = 1000
-maxColumnCount = 300
+maxPrimeCandidate = 200
+maxColumnCount = 20
 maxHalfDomain = maxPrimeCandidate*maxPrimeCandidate / 2
 
 startSieve()
