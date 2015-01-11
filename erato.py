@@ -40,7 +40,13 @@ def printDocFooter():
 </html>
 """ )
 
-def printDocRow( prime, row, indent, broken ):
+def printRow( row, broken ):
+	if( row is None ):
+		return
+
+	indent = row.pop()
+	prime  = row.pop()
+
 	print( '<tr><th>%s</th>' % prime, end='' )
 	print( '<td colspan="%d">&nbsp;</td>' % indent, end='' )
 
@@ -67,9 +73,12 @@ def processNewPrime( prime, erato, prev, indent ):
 	first = int(( prime * prime ) / 2)
 	erato[first]=prime
 
-	curr = []
+	# the last element will be the prime number being evaluated
+	# this is just to make it easier to pass back and forth
+	# between functions
+	curr = [ ]
 	prevIdx = 1
-	patternBroken = 0
+	broken = False
 
 	for index in xrange( first+prime, maxHalfDomain+1, prime ):
 		if( erato[index] != 0 ):
@@ -83,6 +92,7 @@ def processNewPrime( prime, erato, prev, indent ):
 				print( 'prime   = %i' % prime )
 				print( 'gap     = %i' % gap )
 				print( 'prevIdx = %i' % prevIdx )
+				print( 'broken  = %s' % 'True' if broken else 'False' )
 
 				if( prev is None ):
 					print( 'prev is none' )
@@ -93,23 +103,17 @@ def processNewPrime( prime, erato, prev, indent ):
 				print( '-->' )
 
 
-				if( prev is not None and gap == prev[prevIdx] ):
+				if( not broken and prev is not None and gap == prev[prevIdx] ):
 					prevIdx += 1
 				else:
-					prev = None
-
-
-				"""
-				if( patternBroken == 0 and gap != prev[prevIdx] ):
-					patternBroken = prevIdx
-				else:
-					prevIdx += 1
-				"""
+					broken = True
 
 			erato[index]=prime
 			gap = 1
 
-	printDocRow( prime, curr, indent, prevIdx )
+	curr.append( prime  )
+	curr.append( indent )
+	printRow( prev, prevIdx-1 )
 	return( curr )
 
 
