@@ -15,22 +15,18 @@ from __future__ import print_function
 
 def cssFader( steps, c1, c2 ):
 	outputFormat = 'td.c%03d { background: #%02x%02x%02x; color: #%02x%02x%02x; }'
-
 	inc = map( lambda i:float(c2[i]-c1[i])/float( steps-1 ), range(0,3))
 
 	for i in range(0,steps-1):
 		inc1 = c1[0] + int(float(i)*inc[0])
 		inc2 = c1[1] + int(float(i)*inc[1])
 		inc3 = c1[2] + int(float(i)*inc[2])
-
 		print( outputFormat % ( i, 
 				inc1, inc2, inc3,
 				(inc1+0x80)%0x100,
 				(inc2+0x80)%0x100,
 				(inc3+0x80)%0x100 ))
 		i += 1
-
-	#print( outputFormat % ( i, c2[0], c2[1], c2[2] ))
 	return( i )
 
 
@@ -50,7 +46,6 @@ td { border-right-style: solid; border-left-style: solid; padding: 2px; }
 td.breakPat { background: DarkKhaki; }
 """ )
 
-	#cssFader( 10, [ 0x40, 0x80, 0x40 ], [ 0xFF, 0xFF, 0xFF ] )
 	cssFader( 10, [ 0x00, 0x00, 0x00 ], [ 0xFF, 0xFF, 0xFF ] )
 
 	print( """
@@ -92,14 +87,6 @@ def processNewPrime( prime, erato, prev, indent ):
 	global maxColumnCount
 	global maxHalfDomain
 
-	"""
-	print( '<!--' )
-	print( '   processing prime [%i]'%prime )
-	print( '   inital indent [%i]'%indent )
-	print( '-->' )
-	"""
-
-	# nothing left to display
 	if( indent > maxColumnCount ):
 		print( '<!-- indent is larger than maxColumnCount (%i > %i)'%(indent, maxColumnCount))
 		return( None )
@@ -123,22 +110,6 @@ def processNewPrime( prime, erato, prev, indent ):
 			if( column_count <= maxColumnCount ):
 				column_count += 1
 				curr.append( gap )
-
-				"""
-				print( '<!--' )
-				print( '   gap     = %i' % gap )
-				print( '   prevIdx = %i' % prevIdx )
-				print( '   broken  = %s' % 'True' if broken else 'False' )
-
-				if( prev is None ):
-					print( '   prev is none' )
-				else:
-					print( '   prev is not none' )
-					print( '   prev[prevIdx] = %i' % prev[prevIdx] )
-
-				print( '-->' )
-				"""
-
 
 				if( not broken and prev is not None and gap == prev[prevIdx] ):
 					prevIdx += 1
@@ -181,8 +152,8 @@ def startSieve():
 	printDocFooter()
                     
 
-maxPrimeCandidate = 2000
-maxColumnCount = 200
+maxPrimeCandidate = 10000
+maxColumnCount = 300
 maxHalfDomain = maxPrimeCandidate*maxPrimeCandidate / 2
 
 startSieve()

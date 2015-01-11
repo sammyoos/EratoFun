@@ -1,0 +1,5 @@
+git commit -a -m 'working with colors and patern checking'
+git tag -a 'v0.003' -m 'working with colors and patern checking'
+git branch -f gh-pages v0.003
+git push --all
+
