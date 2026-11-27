@@ -1,53 +1,41 @@
-EratoFun
-========
+# EratoFun
 
-Exploration of the Sieve of Eratosthenes
-----------------------------------------
+An interactive exploration of the Sieve of Eratosthenes and the gaps between composites marked by each prime.
 
+## Explore
 
-A number of years ago I was playing with the Sieve of Eratosthenes and 
-noticed that when iterating through the list of integers and marking the
-composites that the gaps between numbers that were marked by that particular
-prime, had interesting patterns.  I found the following properties:
-- the first composite knocked out was always the square of the prime
-- the gaps were were always even multiples of the prime being iterated
-- the gaps had very distictive similarities
+The app shows one row for each odd prime up to the square root of the selected sieve limit. It starts marking at that prime's square, skips composites already marked by smaller primes, and records its new marks. A tile counts the `2p`-sized steps between marks (`gap / 2p`), matching the original chart's normalized values. Rows shift right by one position to make their patterns easier to compare. Like the original, the chart omits 2 because the sieve handles even composites separately.
 
-The page displayed at http://sammyoos.github.io/EratoFun shows this pattern
-as best as I could to demonstrate the similarities.  I have, for some time,
-tried to figure if the numbers are predictable, but so far have not had success.
+Use the limit slider to change the maximum number in the sieve. Click a prime to show its worked example, and check one or more primes to compare their gap sequences aligned by gap number. The main chart displays up to the first 140 intervals per row. This is a number ceiling, unlike the original generator's `maxPrimeCandidate` setting; the default therefore displays fewer prime rows than the original static table.
 
-The page displayed, shows the gap between composites knocked out by each 
-prime being interated over (divided by two because all the gaps are even).  Each
-row is also shifted over by one, to highlight the similarities between the rows.
+## Sammy's conjecture
+
+For a prime `p`, let `c` be the first composite after `p²` that is newly marked by `p`, and let `g = c - p²`. If the first chart tile is `s`, then `g = 2ps`; Sammy's observation is that the next prime `p'` satisfies:
+
+```text
+p' = p + g / p
+```
+
+Equivalently, the original chart's tile gives `p' = p + 2s`, and `c = p × p'`. Between consecutive primes `p` and `p'`, every composite multiple `p × q` with composite `q` has already been marked by a smaller prime. The next fresh mark is therefore `p × p'`, and its distance from `p²` is `p(p' - p)`. The app converts the selected row's normalized tile back to the full gap `g` before showing Sammy's formula.
+
+## Run locally
+
+Requires Node.js 22 or later.
+
+```sh
+npm ci
+npm run dev
+```
+
+Run the focused sieve tests and create a production build with:
+
+```sh
+npm test
+npm run build
+```
+
+The built site is written to `dist/`. The GitHub Actions workflow deploys it to GitHub Pages when changes are pushed to `master` or when manually triggered. The repository's Pages source must be set to **GitHub Actions**.
+
+`erato.py` is retained as a historical version of the original static table generator; the web app no longer uses it.
 
 _Sam_
-
-
-Interesting Bit
----------------
-
-
-I'm sure someone a fair bit smarter than me has already discovered this,
-but in case not...
-
-**Sammy's Conjecture**
-
-For all primes, take the gap "g" between the square of that prime "p" and the next integer 
-"c" that would be marked as a composite of that prime (and had not already been marked as a
-composite of a smaller prime) by the Sieve of Eratosthenes, and you get the following
-equation for the successive prime number "p'":
-
-p' = p + g/p
-
-Interestingly, then, c must equal p x p' as g = c - p * p
-
-So, once the sieve has been completed for all primes less than or equal to P, the sieve
-provides three ways to determine the next prime (in order of increasing complexity):
-
-1. the next unmarked integer in the sieve array (Step #4 here: [wikipedia.org/wiki/Sieve_of_Eratosthenes](http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Algorithm_description ))
-2. p' = p + g / p (as shown above)
-3. p' = c / p
-
-It follows that #2 and #3 are valid iff p' = p + g/p.
-
